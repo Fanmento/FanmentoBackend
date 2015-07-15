@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" method="POST" action="{% if update %}{% url fanmento.admin.views.advertisement_detail ad_id %}{% else %}{% url fanmento.admin.views.create_advertisement %}{% endif %}" class="form-horizontal" accept-charset="UTF-8">
+    {% csrf_token %}
+    <legend>{% if update %}Update{% else %}Create{% endif %} an advertisement</legend>
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+    <div id="div_{{ field.auto_id }}" class="control-group {{ field.css_classes }}">
+        <label class="control-label" for="id_name">{{ field.label }}</label>
+        <div class="controls">
+            {% if field.label == "Image" and update %}
+            <div class="existing-image">
+                <img src="/api/v1/templates/ad/{{ ad_id }}/image" width="100px" />
+            </div>
+            {% endif %}
+            {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                <span class="help-inline">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="form-actions">
+        <button type="submit" name="submit" class="btn btn-success">{% if update %}Update{% else %}Create{% endif %}</button>
+    </div>
+</form>
+
+{% endblock %}

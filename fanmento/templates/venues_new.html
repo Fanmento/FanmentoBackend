@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block includes %}
+<link type="text/css" rel="stylesheet" href="/css/daterangepicker.css" />
+<script src="/js/date.js"></script>
+<script src="/js/daterangepicker.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="{% if update %}{% url fanmento.admin.views.venue_detail venue_id %}{% else %}{% url fanmento.admin.views.create_venue %}{% endif %}" class="form-horizontal" accept-charset="UTF-8">
+    {% csrf_token %}
+    {{ form }}
+    <div class="form-actions">
+        <button type="submit" name="submit" class="btn btn-success">Create</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_valid_dates').daterangepicker();
+    });
+</script>
+
+{% endblock %}

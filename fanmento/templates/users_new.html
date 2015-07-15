@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block includes %}
+<link rel="stylesheet" href="/css/bootstrap-image-gallery.min.css">
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="{% if update %}{% url fanmento.admin.views.user_detail user_id %}{% else %}{% url fanmento.admin.views.create_user %}{% endif %}" class="form-horizontal" accept-charset="UTF-8">
+    {% csrf_token %}
+    {{ form }}
+    <div class="form-actions">
+        <button type="submit" name="submit" class="btn btn-success">{% if update %}Update{% else %}Create{% endif %}</button>
+    </div>
+</form>
+
+<legend>Manage Images</legend>
+
+<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
+    {% for image in images %}
+    <a rel="gallery" href="{{ image.url }}" data-date="{{ image.timestamp }}" title="{{ image.id }}">
+        <img src="{{ image.url }}=s150" />
+    </a>
+    {% endfor %}
+</div>
+
+<div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body"><div class="modal-image"></div></div>
+    <div class="modal-footer">
+        <form id="delete-form" method="POST" action="{% url fanmento.admin.views.delete_image %}" accept-charset="UTF-8">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user_id }}" />
+            <input type="hidden" id="image-id" name="image_id" value="" />
+            <button type="submit" name="submit" class="btn btn-danger modal-delete"><i class="icon-trash"></i> Delete</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/load-image.js"></script>
+<script src="/js/bootstrap-image-gallery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.modal-delete').click(function() {
+            
+        });
+    });
+</script>
+{% endblock %}

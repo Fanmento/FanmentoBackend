@@ -1,0 +1,23 @@
+{% extends "resource_list.html" %}
+
+{% block thead %}
+<th><a href="?sort={% if sort == 'name' %}-{% endif %}name">Name</a></th>
+<th><a href="?sort={% if sort == 'address' %}-{% endif %}address">Address</a></th>
+<th>Latitude</a></th>
+<th>Longitude</a></th>
+{% endblock %}
+
+{% block rows %}
+{% for venue in page.object_list %}
+    <tr>
+        <td><input id="{{ venue.key.id }}" class="resource-row" type="checkbox"></td>
+        <td><a href="{% url fanmento.admin.views.venue_detail venue.key.id %}">{{ venue.name }}</a></td>
+        <td>{{ venue.address }}</td>
+        <td>{{ venue.location.lat }}</td>
+        <td>{{ venue.location.lon }}</td>
+    </tr>
+{% endfor %}
+{% endblock %}
+
+{% block create_uri %}{% url fanmento.admin.views.create_venue %}{% endblock %}
+{% block delete_uri %}{% url fanmento.admin.views.delete_venue %}{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "resource_list.html" %}
+
+{% block thead %}
+<th><a href="?sort={% if sort == 'name' %}-{% endif %}name">Name</a></th>
+<th><a href="?sort={% if sort == 'code' %}-{% endif %}code">Code</a></th>
+<th><a href="?sort={% if sort == 'category' %}-{% endif %}category">Category</a></th>
+<th><a href="?sort={% if sort == 'venue' %}-{% endif %}venue">Venue</a></th>
+{% endblock %}
+
+{% block rows %}
+{% for template in page.object_list %}
+    <tr>
+        <td><input id="{{ template.key.id }}" class="resource-row" type="checkbox"></td>
+        <td><a href="{% url fanmento.admin.views.template_detail template.key.id %}">{{ template.name }}</a></td>
+        <td>{{ template.code }}</td>
+        <td>{{ template.category }}</td>
+        <td>{{ template.venue.name }}</td>
+    </tr>
+{% endfor %}
+{% endblock %}
+
+{% block create_uri %}{% url fanmento.admin.views.create_template %}{% endblock %}
+{% block delete_uri %}{% url fanmento.admin.views.delete_template %}{% endblock %}

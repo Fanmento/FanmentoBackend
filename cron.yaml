@@ -1,0 +1,4 @@
+cron:
+- description: daily reset token cleanup
+  url: /api/v1/user/reset/clear
+  schedule: every 6 hours

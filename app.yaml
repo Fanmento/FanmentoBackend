@@ -1,0 +1,41 @@
+application: fanmento-prod
+version: 3
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /css
+  static_dir: fanmento/static/css
+
+- url: /js
+  static_dir: fanmento/static/js
+
+- url: /img
+  static_dir: fanmento/static/img
+
+- url: /static/admin
+  static_dir: fanmento/static/admin
+  expiration: '0'
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: django
+  version: "1.4"
+
+- name: PIL
+  version: "latest"
+
+builtins:
+- appstats: on
+- remote_api: on
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'fanmento.settings'
+  STATIC_IMG_PATH: 'http://mobile.fanmento.com/img'

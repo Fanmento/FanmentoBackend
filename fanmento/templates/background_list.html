@@ -1,0 +1,17 @@
+{% extends "resource_list.html" %}
+
+{% block thead %}
+<th>Name</th>
+{% endblock %}
+
+{% block rows %}
+{% for background in page.object_list %}
+    <tr>
+        <td><input id="{{ background.key.id }}" class="resource-row" type="checkbox"></td>
+        <td><a href="{% url fanmento.admin.views.background_detail background.key.id %}">{{ background.name }}</a></td>
+    </tr>
+{% endfor %}
+{% endblock %}
+
+{% block create_uri %}{% url fanmento.admin.views.create_background %}{% endblock %}
+{% block delete_uri %}{% url fanmento.admin.views.delete_background %}{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "resource_list.html" %}
+
+{% block thead %}
+<th><a href="?sort={% if sort == 'name' %}-{% endif %}name">Name</a></th>
+<th><a href="?sort={% if sort == 'company' %}-{% endif %}company">Company</a></th>
+<th><a href="?sort={% if sort == 'clicks' %}-{% endif %}clicks">Clicks</a></th>
+<th><a href="?sort={% if sort == 'impressions' %}-{% endif %}impressions">Impressions</a></th>
+{% endblock %}
+
+{% block rows %}
+{% for ad in page.object_list %}
+    <tr>
+        <td><input id="{{ ad.key.id }}" class="resource-row" type="checkbox"></td>
+        <td><a href="{% url fanmento.admin.views.advertisement_detail ad.key.id %}">{{ ad.name }}</a></td>
+        <td>{{ ad.company }}</td>
+        <td>{{ ad.clicks }}</td>
+        <td>{{ ad.impressions }}</td>
+    </tr>
+{% endfor %}
+{% endblock %}
+
+{% block create_uri %}{% url fanmento.admin.views.create_advertisement %}{% endblock %}
+{% block delete_uri %}{% url fanmento.admin.views.delete_advertisement %}{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "resource_list.html" %}
+
+{% block thead %}
+<th><a href="?sort={% if sort == 'email' %}-{% endif %}email">Email</a></th>
+<th><a href="?sort={% if sort == 'name' %}-{% endif %}name">Name</a></th>
+{% endblock %}
+
+{% block rows %}
+{% for user in page.object_list %}
+    <tr>
+        <td><input id="{{ user.key.id }}" class="resource-row" type="checkbox"></td>
+        <td><a href="{% url fanmento.admin.views.user_detail user.key.id %}">{{ user.email }}</a></td>
+        <td>{{ user.name }}</td>
+    </tr>
+{% endfor %}
+{% endblock %}
+
+{% block create_uri %}{% url fanmento.admin.views.create_user %}{% endblock %}
+{% block delete_uri %}{% url fanmento.admin.views.delete_user %}{% endblock %}

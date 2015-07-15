@@ -1,0 +1,25 @@
+body {
+    padding: 8px;
+    margin: 0 auto;
+}
+
+@media screen and ( max-width: 600px ) {
+    width: 100%;
+}
+
+.button-row {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+div.pagination {
+    text-align: center;
+}
+
+form#delete-form {
+    margin: 0px;
+}
+
+.row-fluid .span8 {
+    width: 73%;
+}

@@ -1,0 +1,89 @@
+{% extends "index.html" %}
+
+{% block content %}
+<script type="text/html" id="resource-id-formrow">
+    <input type="hidden" name="resource-ids[]" value="<%= id%>" />
+</script>
+
+<div class="button-row">
+    <a href="#" class="btn create-btn"><i class="icon-plus"></i><strong> Create New</strong></a>
+    <a href="#" class="btn delete-btn"><i class="icon-trash"></i><strong> Delete Selected</strong></a>
+</div>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <th><input id="resource-select" type="checkbox"></th>
+
+        {% block thead %}
+        {% endblock %}
+    </thead>
+    {% block rows %}
+    {% endblock %}
+</table>
+
+<div class="pagination">
+    <ul>
+        {% if page.has_previous %}
+        <li><a href="?page={{ page.previous_page_number }}{% if sort %}&sort={{ sort }}{% endif %}">Prev</a></li>
+        {% endif %}
+
+        <li><a href="?page={{ page.number }}">Page {{ page.number }} of {{ page.paginator.num_pages }}</a></li>
+
+        {% if page.has_next %}
+        <li><a href="?page={{ page.next_page_number }}{% if sort %}&sort={{ sort }}{% endif %}">Next</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="modal hide fade" id="alert-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="delete-form" enctype="multipart/form-data" method="POST" action="{% block delete_uri %}{% endblock %}" accept-charset="UTF-8">
+        {% csrf_token %}
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Delete {{ active }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the selected {{ active }}?</p>
+        </div>
+        <div id="input-fields">
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+            <button type="submit" name="submit" class="btn btn-primary">Yes</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#resource-select').click(function() {
+            var checked = $(this).is(':checked');
+
+            $('input.resource-row').each(function() {
+                $(this).prop('checked', checked);
+            });
+        });
+
+        $('.delete-btn').click(function() {
+            var to_delete = [];
+            $('#input-fields').empty();
+            $('input.resource-row:checked').each(function() {
+                var id = $(this).attr('id');
+
+                to_delete.push(id);
+    
+                var template = $('#resource-id-formrow').html();
+                $('#input-fields').append(_.template(template, {id: id}));
+            });
+
+            if (to_delete.length > 0) {
+                $('#alert-modal').modal('show');
+            }
+        });
+
+        $('.create-btn').click(function() {
+            window.location = "{% block create_uri %}{% endblock %}"
+        });
+    });
+</script>
+{% endblock %}
